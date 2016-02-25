@@ -26,6 +26,11 @@ var ADTSDemuxer = AV.Demuxer.extend(function() {
     // Reads an ADTS header
     // See http://wiki.multimedia.cx/index.php?title=ADTS
     this.readHeader = function(stream) {
+        // ondrejstocek: we need to read header by our own way
+        if (self && self.externalASTSHeaderSource == 'function') {
+          return self.externalASTSHeaderSource(stream);
+        }
+
         if (stream.read(12) !== 0xfff)
             throw new Error('Invalid ADTS header.');
             
