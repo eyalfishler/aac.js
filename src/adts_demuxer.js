@@ -5,6 +5,9 @@ var ADTSDemuxer = AV.Demuxer.extend(function() {
     AV.Demuxer.register(this);
     
     this.probe = function(stream) {
+        // ondrejstocek: we don't have usual aac header in mp4
+        return true;
+        /*
         var offset = stream.offset;
         
         // attempt to find ADTS syncword
@@ -17,6 +20,7 @@ var ADTSDemuxer = AV.Demuxer.extend(function() {
         
         stream.seek(offset);
         return false;
+        */
     };
         
     this.prototype.init = function() {
@@ -27,7 +31,7 @@ var ADTSDemuxer = AV.Demuxer.extend(function() {
     // See http://wiki.multimedia.cx/index.php?title=ADTS
     this.readHeader = function(stream) {
         // ondrejstocek: we need to read header by our own way
-        if (self && self.externalASTSHeaderSource == 'function') {
+        if (self && typeof self.externalASTSHeaderSource == 'function') {
           return self.externalASTSHeaderSource(stream);
         }
 
